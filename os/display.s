@@ -10,16 +10,25 @@ print:
 # keep this in mind:
 # while (string[i] != 0) { print string[i]; i++ }
 
-# the comparison for string end (null byte)
-.start:
-mov $0x0e, %ah # tty mode
-mov  'H', %al
-int $0x10
-mov 'e', %al
+#the comparison for string end (null byte)
+start:
+    mov (%bx), %al # 'bx' is the base address for the string
+    cmp $0, %al 
+    je done
 
-.done:
+    # the part where we print with the BIOS help
+    mov $0x0e, %ah
+    int $0x10 # 'al' already contains the char
+
+    # increment pointer and do next loop
+    add $1, %bx
+    jmp start
+
+done:
     popa
     ret
+
+
 
 print_nl:
     pusha

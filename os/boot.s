@@ -17,7 +17,7 @@ _start:
     call cls
 
 
-    #mov  $boot_msg, %bx
+    mov  $boot_msg, %bx
     call print
     
 

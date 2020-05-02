@@ -1,4 +1,4 @@
-install-pkg qemu
+#install-pkg qemu
 
 as --32 "./os/display.s" -o display.o
 as --32 "./os/gdt.s" -o gdt.o
