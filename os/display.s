@@ -1,5 +1,6 @@
 .global print        # Make this available to other modules
-.global print_nl 	 
+.global print_nl 	
+.global disableCursor 
 .global cls
 .section .text
 .code16
@@ -41,6 +42,13 @@ print_nl:
     
     popa
     ret
+
+disableCursor:
+	pusha
+	mov $0x01, %ah
+	mov $0x2000, %cx
+	int $0x10
+	ret
 
 cls:
   pusha

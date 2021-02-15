@@ -20,6 +20,11 @@ _start:
     mov  $boot_msg, %bx
     call print
     
+	call waitForKey
+
+	
+	call initSerial
+	call testSerial
 
     call installGDT
 
@@ -35,7 +40,7 @@ _start:
     jmp .endloop
 
 .section .rodata
-boot_msg: .asciz "Hello"
+boot_msg: .asciz "Press any key..."
 console_rdy: .asciz "Ready!"
 
 .section .text.pmode
@@ -43,11 +48,11 @@ console_rdy: .asciz "Ready!"
 
   Pmode: 
   
-  mov		0x10, %ax		# set data segments to data selector (0x10)
-	xor %ax, %ax
+  mov 0x10, %ax		# set data segments to data selector (0x10)
+  xor %ax, %ax
   mov %ax, %ds
   mov %ax, %ss
-	mov	0x90000, %esp		# stack begins from 90000h
+  mov 0x90000, %esp		# stack begins from 90000h
 
 .endloop32:
     cli
