@@ -22,9 +22,9 @@ ld -melf_i386 --oformat=binary -T"./os/link.ld" -nostartfiles -nostdlib \
 
 #fallocate -l 1474560 ./boot.bin
 #genisoimage -v -J -r -V "MY_DISK_LABEL" -o ./disk/cd.iso boot.bin
-cd ./boot
+#cd ./boot
 
-genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -b boot.bin -boot-info-table -o bootcd.iso ./disk
+genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -G boot.bin -o ./cd.iso ./
 
 #genisoimage -R -b ./disk/ \
 #		 -no-emul-boot \
