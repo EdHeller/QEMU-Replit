@@ -1,6 +1,6 @@
 #install-pkg qemu
 #install-pkg mtools
-install-pkg genisoimage
+#install-pkg genisoimage
 
 #mkdir floppy
 #touch disk1.img
@@ -22,7 +22,24 @@ ld -melf_i386 --oformat=binary -T"./os/link.ld" -nostartfiles -nostdlib \
 
 mkdir disk
 touch -c ./disk/cd.iso
+fallocate -l 1474560 ./boot.bin
 genisoimage -v -J -r -V "MY_DISK_LABEL" -o ./disk/cd.iso boot.bin
+cd ./boot
+
+#genisoimage -r -input-charset utf8 -b boot.bin -boot-info-table -o bootcd.iso ./disk
+
+#genisoimage -R -b ./disk/ \
+#		 -no-emul-boot \
+#		-boot-load-size 4 \
+#                -A ./boot.bin \
+#                -input-charset utf8 \
+#                -quiet \
+#                -boot-info-table \
+#                -o os.iso \
+#                disk
+
+
+#mkisofs -o ./new.iso -b ./stage2_eltorito.iso -c boot/boot.catalog  -no-emul-boot -boot-load-size 4 \ -boot-info-table -J -R -V disks .
 
 #use this for beeping and sound on an actual system running qemu (won't work in the repl.it container)
 #-soundhw pcspk  
