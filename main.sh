@@ -15,7 +15,7 @@ as --32 "./os/keyboard.s" -o keyboard.o
 as --32 "./os/gdt.s" -o gdt.o
 as --32 "./os/boot.s" -o boot.o
 ld -melf_i386 --oformat=binary -T"./os/link.ld" -nostartfiles -nostdlib \
-    serial.o keyboard.o display.o gdt.o boot.o -o boot.bin
+    serial.o keyboard.o display.o gdt.o boot.o -o "boot/boot.bin"
 
 #mcopy -i ./floppy/disk1.img ./boot.bin
 #mdir -i /floppy/disk1.img
@@ -24,7 +24,7 @@ ld -melf_i386 --oformat=binary -T"./os/link.ld" -nostartfiles -nostdlib \
 #genisoimage -v -J -r -V "MY_DISK_LABEL" -o ./disk/cd.iso boot.bin
 #cd ./boot
 
-genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -G boot.bin -o ./cd.iso ./
+genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -no-emul-boot -boot-load-size 4 -b multiboot.bin -o ./cd.iso ./boot
 
 #genisoimage -R -b ./disk/ \
 #		 -no-emul-boot \
