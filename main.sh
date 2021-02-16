@@ -1,13 +1,6 @@
-#install-pkg qemu
+install-pkg qemu
 #install-pkg mtools
-#install-pkg genisoimage
-
-#mkdir floppy
-#touch disk1.img
-#dd if=/dev/zero of=./floppy/disk1.img count=1440 bs=1k 
-
-#mdir -i ./floppy/disk1.img
-#mcopy -i -D  ./boot.bin ./floppy/disk1.img
+install-pkg genisoimage
 
 as --32 "./os/display.s" -o display.o
 as --32 "./os/serial.s" -o serial.o
@@ -17,27 +10,11 @@ as --32 "./os/boot.s" -o boot.o
 ld -melf_i386 --oformat=binary -T"./os/link.ld" -nostartfiles -nostdlib \
     serial.o keyboard.o display.o gdt.o boot.o -o "boot/boot.bin"
 
-#mcopy -i ./floppy/disk1.img ./boot.bin
-#mdir -i /floppy/disk1.img
 
 #fallocate -l 1474560 ./boot.bin
-#genisoimage -v -J -r -V "MY_DISK_LABEL" -o ./disk/cd.iso boot.bin
-#cd ./boot
-
-genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -no-emul-boot -boot-load-size 4 -b multiboot.bin -o ./cd.iso ./boot
-
-#genisoimage -R -b ./disk/ \
-#		 -no-emul-boot \
-#		-boot-load-size 4 \
-#                -A ./boot.bin \
-#                -input-charset utf8 \
-#                -quiet \
-#                -boot-info-table \
-#                -o os.iso \
-#                disk
 
 
-#mkisofs -o ./new.iso -b ./stage2_eltorito.iso -c boot/boot.catalog  -no-emul-boot -boot-load-size 4 \ -boot-info-table -J -R -V disks .
+genisoimage -v -J -r -V "BOOTDISK" -input-charset utf8 -no-emul-boot -boot-load-size 4 -b stage2_eltorito -o ./cd.iso ./boot
 
 #use this for beeping and sound on an actual system running qemu (won't work in the repl.it container)
 #-soundhw pcspk  
